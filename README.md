@@ -1,1 +1,0 @@
-# memechitro-ai-studio
