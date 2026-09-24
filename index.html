@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#080b12">
+<meta name="description" content="MemeChitro AI Studio — Create funny multi-character AI videos in Hindi, Bengali and English.">
+<title>MemeChitro AI Studio</title>
+
+<style>
+*{box-sizing:border-box}
+
+:root{
+  --bg:#080b12;
+  --panel:#111620;
+  --panel2:#0c1119;
+  --border:#283142;
+  --text:#f6f7fb;
+  --muted:#929caf;
+  --purple:#7c3aed;
+  --pink:#db2777;
+  --green:#22c55e;
+  --red:#ef4444;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  background:
+    radial-gradient(circle at 15% 10%,#25124a 0,transparent 30%),
+    radial-gradient(circle at 90% 20%,#3a102c 0,transparent 28%),
+    var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+
+button,input,select,textarea{font:inherit}
+
+button{
+  cursor:pointer;
+  border:0;
+}
+
+.app{
+  width:min(1450px,100%);
+  margin:auto;
+  padding:22px;
+}
+
+/* HEADER */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.logo{
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:-.7px;
+}
+
+.logo span{
+  background:linear-gradient(90deg,#a78bfa,#f472b6);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.header-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#b9c2d2;
+  border:1px solid var(--border);
+  background:#111620;
+  border-radius:99px;
+  padding:8px 13px;
+  font-size:12px;
+}
+
+.dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#f59e0b;
+}
+
+.dot.online{background:var(--green)}
+
+/* LAYOUT */
+
+.workspace{
+  display:grid;
+  grid-template-columns:430px 1fr;
+  gap:18px;
+}
+
+.panel{
+  background:rgba(17,22,32,.94);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:19px;
+  box-shadow:0 18px 50px rgba(0,0,0,.25);
+}
+
+h2{
+  font-size:17px;
+  margin:0 0:9px;
+}
+
+h3{
+  font-size:13px;
+  margin:18px 0 8px;
+}
+
+.description{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
+  margin-bottom:13px;
+}
+
+/* INPUTS */
+
+textarea,
+input,
+select{
+  width:100%;
+  border:1px solid #2b3445;
+  border-radius:10px;
+  background:#090e15;
+  color:#fff;
+  outline:none;
+  padding:11px;
+}
+
+textarea{
+  min-height:175px;
+  resize:vertical;
+  line-height:1.5;
+}
+
+textarea:focus,
+input:focus,
+select:focus{
+  border-color:#8b5cf6;
+  box-shadow:0 0 0 2px #7c3aed22;
+}
+
+label{
+  display:block;
+  color:#9ba5b8;
+  font-size:11px;
+  margin:13px 0 5px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.language-lock{
+  display:inline-block;
+  color:#86efac;
+  border:1px solid #1d633b;
+  background:#0d2618;
+  padding:3px 7px;
+  border-radius:99px;
+  font-size:9px;
+  margin-left:5px;
+}
+
+/* CHARACTERS */
+
+.character-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.character{
+  display:grid;
+  grid-template-columns:40px 1fr 115px 31px;
+  gap:7px;
+  align-items:center;
+  padding:8px;
+  border:1px solid var(--border);
+  background:#0b1018;
+  border-radius:11px;
+}
+
+.avatar{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  background:linear-gradient(135deg,#7c3aed,#db2777);
+}
+
+.remove-character{
+  width:31px;
+  height:31px;
+  padding:0;
+  border-radius:8px;
+  background:#321c28;
+  color:#fda4af;
+}
+
+/* BUTTONS */
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+
+.btn{
+  padding:10px 13px;
+  border-radius:10px;
+  color:#fff;
+  background:#252d3b;
+  font-weight:700;
+  font-size:12px;
+}
+
+.btn.primary{
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+}
+
+.btn.secondary{
+  background:#18202c;
+}
+
+.btn.success{
+  background:#14532d;
+}
+
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+/* RIGHT SIDE */
+
+.production{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 290px;
+  gap:16px;
+}
+
+.preview-title{
+  margin-bottom:9px;
+}
+
+.preview{
+  position:relative;
+  min-height:570px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  background:#05070b;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.scene-preview{
+  width:min(78%,390px);
+  aspect-ratio:9/16;
+  border-radius:15px;
+  padding:25px 18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 15%,#364158,transparent 34%),
+    linear-gradient(160deg,#171d2a,#070a0f);
+  border:1px solid #ffffff12;
+}
+
+.character-icons{
+  font-size:58px;
+  letter-spacing:-14px;
+  margin-top:auto;
+  margin-bottom:35px;
+}
+
+.scene-preview strong{
+  font-size:18px;
+}
+
+.scene-preview small{
+  color:#aab4c6;
+  margin-top:8px;
+  line-height:1.4;
+}
+
+.render-status{
+  position:absolute;
+  bottom:12px;
+  left:12px;
+  right:12px;
+  padding:10px;
+  background:#000c;
+  border:1px solid #ffffff14;
+  border-radius:10px;
+  color:#c2cada;
+  font-size:11px;
+}
+
+.progress{
+  height:8px;
+  background:#252d3b;
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#7c3aed,#db2777);
+  transition:width .3s;
+}
+
+/* SCENES */
+
+.timeline-title{
+  font-size:13px;
+  font-weight:800;
+  margin-bottom:9px;
+}
+
+.scene-card{
+  background:#0b1018;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:8px;
+}
+
+.scene-card.active{
+  border-color:#8b5cf6;
+  box-shadow:0 0 0 1px #8b5cf633;
+}
+
+.scene-number{
+  color:#a78bfa;
+  font-size:10px;
+  font-weight:800;
+}
+
+.scene-name{
+  font-size:12px;
+  font-weight:800;
+  margin-top:3px;
+}
+
+.scene-info{
+  color:#929caf;
+  font-size:10px;
+  margin-top:5px;
+  line-height:1.4;
+}
+
+/* PIPELINE */
+
+.pipeline{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:15px;
+}
+
+.pipeline-item{
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:9px;
+  background:#0b1018;
+  font-size:10px;
+  color:#929caf;
+}
+
+.pipeline-item strong{
+  display:block;
+  color:#fff;
+  font-size:11px;
+  margin-bottom:3px;
+}
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#000b;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modal-content{
+  width:min(520px,100%);
+  background:#111620;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  z-index:200;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%) translateY(20px);
+  opacity:0;
+  pointer-events:none;
+  background:#151b26;
+  border:1px solid var(--border);
+  padding:11px 15px;
+  border-radius:10px;
+  font-size:12px;
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1050px){
+  .workspace{
+    grid-template-columns:1fr;
+  }
+
+  .production{
+    grid-template-columns:1fr;
+  }
+
+  .timeline{
+    display:none;
+  }
+}
+
+@media(max-width:600px){
+  .app{
+    padding:12px;
+  }
+
+  .header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .row{
+    grid-template-columns:1fr;
+  }
+
+  .character{
+    grid-template-columns:36px 1fr;
+  }
+
+  .character select,
+  .character button{
+    grid-column:2;
+  }
+
+  .preview{
+    min-height:500px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+  <div class="logo">
+    🎬 MemeChitro <span>AI Studio</span>
+  </div>
+
+  <div class="header-status">
+    <span class="dot" id="connectionDot"></span>
+    <span id="connectionText">AI backend not connected</span>
+  </div>
+</header>
+
+<div class="workspace">
+
+<!-- LEFT -->
+
+<section class="panel">
+
+<h2>1. Describe your funny story</h2>
+
+<div class="description">
+Write your story naturally. The AI will identify characters, create dialogue,
+plan scenes, generate backgrounds, actions, expressions, music and sound effects.
+</div>
+
+<textarea
+id="story"
+placeholder="Example: Four friends meet at a roadside tea stall. Raju says he knows everything. The shopkeeper asks him the price of tea, but Raju gives a ridiculous answer. Everyone starts laughing..."
+></textarea>
+
+<label>
+Video language
+<span class="language-lock">ONE LANGUAGE PER VIDEO</span>
+</label>
+
+<select id="language">
+  <option value="Hindi">Hindi 🇮🇳</option>
+  <option value="Bengali">Bengali 🇮🇳</option>
+  <option value="English">English 🇬🇧</option>
+</select>
+
+<div class="row">
+
+<div>
+<label>Video format</label>
+<select id="format">
+  <option value="9:16">9:16 — Reel / Shorts</option>
+  <option value="16:9">16:9 — YouTube</option>
+  <option value="1:1">1:1 — Square</option>
+</select>
+</div>
+
+<div>
+<label>Quality</label>
+<select id="quality">
+  <option value="1080p">1080p HD</option>
+  <option value="720p">720p HD</option>
+  <option value="4K">4K</option>
+</select>
+</div>
+
+</div>
+
+<h3>2. Characters</h3>
+
+<div class="description">
+Every character has a separate voice identity while speaking the selected
+language. Character appearance and voice should remain consistent across scenes.
+</div>
+
+<div class="character-list" id="characterList"></div>
+
+<div class="actions">
+  <button class="btn secondary" onclick="addCharacter()">+ Add character</button>
+  <button class="btn secondary" onclick="autoCharacters()">✨ Auto-create</button>
+</div>
+
+<h3>3. Generation</h3>
+
+<div class="actions">
+  <button class="btn primary" id="planButton" onclick="buildScenePlan()">
+    🧠 Analyze & Build Scenes
+  </button>
+
+  <button class="btn secondary" onclick="openSettings()">
+    ⚙ Settings
+  </button>
+</div>
+
+</section>
+
+
+<!-- RIGHT -->
+
+<section class="panel">
+
+<div class="production">
+
+<div>
+
+<h2 class="preview-title">Video preview</h2>
+
+<div class="description">
+Your final video will contain animated characters, multilingual dialogue,
+character-specific voices, lip-sync, music and sound effects.
+</div>
+
+<div class="preview">
+
+<div class="scene-preview">
+
+<div class="character-icons" id="characterIcons">
+👨‍🦱 👨‍🦳 👩
+</div>
+
+<strong id="previewTitle">
+Ready for your story
+</strong>
+
+<small id="previewSubtitle">
+Describe your story and build the scene plan.
+</small>
+
+</div>
+
+<div class="render-status" id="renderStatus">
+Ready
+</div>
+
+</div>
+
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div class="actions">
+
+<button
+class="btn primary"
+id="renderButton"
+disabled
+onclick="renderVideo()">
+🎬 Generate Real Video
+</button>
+
+<button
+class="btn secondary"
+id="regenerateButton"
+disabled
+onclick="renderVideo()">
+🔄 Regenerate
+</button>
+
+<button
+class="btn success"
+id="downloadButton"
+disabled
+onclick="downloadVideo()">
+⬇ Download MP4
+</button>
+
+</div>
+
+</div>
+
+
+<!-- TIMELINE -->
+
+<div class="timeline">
+
+<div class="timeline-title">
+Scene timeline
+</div>
+
+<div id="sceneTimeline">
+<div class="description">
+No scene plan yet.
+</div>
+</div>
+
+<div class="timeline-title" style="margin-top:18px">
+Generation pipeline
+</div>
+
+<div class="pipeline">
+
+<div class="pipeline-item">
+<strong>01 · Story AI</strong>
+Story, dialogue and action planning
+</div>
+
+<div class="pipeline-item">
+<strong>02 · Characters</strong>
+Consistent visual identities
+</div>
+
+<div class="pipeline-item">
+<strong>03 · Voices</strong>
+Separate voice per character
+</div>
+
+<div class="pipeline-item">
+<strong>04 · Animation</strong>
+Motion and facial expressions
+</div>
+
+<div class="pipeline-item">
+<strong>05 · Lip-sync</strong>
+Dialogue synchronized to mouth
+</div>
+
+<div class="pipeline-item">
+<strong>06 · Audio</strong>
+Music and funny SFX
+</div>
+
+<div class="pipeline-item">
+<strong>07 · Render</strong>
+HD MP4 assembly
+</div>
+
+<div class="pipeline-item">
+<strong>08 · Download</strong>
+Final video with audio
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="modal" id="settingsModal">
+
+<div class="modal-content">
+
+<h2>Project settings</h2>
+
+<div class="description">
+These settings control consistency and automatic production behavior.
+</div>
+
+<label>Character consistency</label>
+<select id="characterConsistency">
+<option>Maximum — lock appearance across scenes</option>
+<option>High</option>
+<option>Standard</option>
+</select>
+
+<label>Voice consistency</label>
+<select id="voiceConsistency">
+<option>Lock voice identity per character</option>
+<option>Allow slight variation</option>
+</select>
+
+<label>Captions</label>
+<select id="captions">
+<option>Auto captions</option>
+<option>Captions off</option>
+</select>
+
+<label>Funny style</label>
+<select id="comedyStyle">
+<option>Realistic funny</option>
+<option>Meme comedy</option>
+<option>3D cartoon comedy</option>
+<option>Exaggerated animation</option>
+</select>
+
+<div class="actions">
+<button class="btn primary" onclick="closeSettings()">Save settings</button>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURATION
+   =========================================================
+
+   Set this to your deployed backend URL.
+
+   Example:
+   const API_BASE = "https://your-backend.example.com";
+
+   The GitHub Pages frontend itself cannot run Wan 2.1,
+   TTS or FFmpeg. Those processes belong on the backend/GPU server.
+*/
+
+const API_BASE = "";
+
+let characters = [
+  {
+    id:"char_1",
+    name:"Raju",
+    voice:"Funny male"
+  },
+  {
+    id:"char_2",
+    name:"Bablu",
+    voice:"Deep male"
+  },
+  {
+    id:"char_3",
+    name:"Pinky",
+    voice:"Funny female"
+  }
+];
+
+let scenes = [];
+let projectId = null;
+let renderJobId = null;
+
+
+/* =========================================================
+   CHARACTER UI
+   ========================================================= */
+
+function renderCharacters(){
+
+  const container =
+    document.getElementById("characterList");
+
+  container.innerHTML = "";
+
+  characters.forEach((character,index)=>{
+
+    const row = document.createElement("div");
+
+    row.className = "character";
+
+    row.innerHTML = `
+
+      <div class="avatar">
+        ${(character.name || "?").charAt(0).toUpperCase()}
+      </div>
+
+      <input
+        value="${escapeHtml(character.name)}"
+        placeholder="Character name"
+        onchange="updateCharacterName(${index},this.value)"
+      >
+
+      <select
+        onchange="updateCharacterVoice(${index},this.value)"
+      >
+
+        ${[
+          "Funny male",
+          "Deep male",
+          "Funny female",
+          "Elderly male",
+          "Elderly female",
+          "Fast comedic"
+        ].map(voice => `
+          <option
+            value="${voice}"
+            ${voice === character.voice ? "selected" : ""}
+          >
+            ${voice}
+          </option>
+        `).join("")}
+
+      </select>
+
+      <button
+        class="remove-character"
+        onclick="removeCharacter(${index})"
+        title="Remove character"
+      >
+        ×
+      </button>
+
+    `;
+
+    container.appendChild(row);
+  });
+
+  updateCharacterIcons();
+}
+
+
+function updateCharacterName(index,value){
+
+  characters[index].name =
+    value.trim() || "Character " + (index+1);
+
+  renderCharacters();
+}
+
+
+function updateCharacterVoice(index,value){
+
+  characters[index].voice = value;
+}
+
+
+function addCharacter(){
+
+  if(characters.length >= 10){
+
+    showToast("Maximum 10 characters per project.");
+
+    return;
+  }
+
+  characters.push({
+
+    id:"char_" + Date.now(),
+
+    name:"New Character",
+
+    voice:"Funny male"
+
+  });
+
+  renderCharacters();
+
+}
+
+
+function removeCharacter(index){
+
+  if(characters.length <= 1){
+
+    showToast("At least one character is required.");
+
+    return;
+  }
+
+  characters.splice(index,1);
+
+  renderCharacters();
+
+}
+
+
+function autoCharacters(){
+
+  characters = [
+
+    {
+      id:"char_1",
+      name:"Raju",
+      voice:"Funny male"
+    },
+
+    {
+      id:"char_2",
+      name:"Bablu",
+      voice:"Deep male"
+    },
+
+    {
+      id:"char_3",
+      name:"Pinky",
+      voice:"Funny female"
+    },
+
+    {
+      id:"char_4",
+      name:"Shopkeeper",
+      voice:"Elderly male"
+    }
+
+  ];
+
+  renderCharacters();
+
+  showToast("Funny characters created.");
+
+}
+
+
+function updateCharacterIcons(){
+
+  const icons = [
+    "👨‍🦱",
+    "👨‍🦳",
+    "👩",
+    "👴",
+    "👵",
+    "🧔",
+    "👨",
+    "👩‍🦱",
+    "👨‍🦰",
+    "👩‍🦳"
+  ];
+
+  document.getElementById("characterIcons").textContent =
+    characters
+      .slice(0,6)
+      .map((_,i)=>icons[i])
+      .join(" ");
+
+}
+
+
+/* =========================================================
+   SCENE PLANNER
+   ========================================================= */
+
+async function buildScenePlan(){
+
+  const story =
+    document.getElementById("story").value.trim();
+
+  if(!story){
+
+    showToast("Please describe your story first.");
+
+    return;
+  }
+
+  const language =
+    document.getElementById("language").value;
+
+  const button =
+    document.getElementById("planButton");
+
+  button.disabled = true;
+
+  setStatus("Analyzing story…",10);
+
+  try{
+
+    if(API_BASE){
+
+      const response = await fetch(
+        API_BASE + "/api/projects",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            story,
+            language,
+            format:document.getElementById("format").value,
+            quality:document.getElementById("quality").value,
+            characters
+          })
+        }
+      );
+
+      if(!response.ok){
+
+        throw new Error("Project creation failed.");
+
+      }
+
+      const project =
+        await response.json();
+
+      projectId = project.id;
+
+      const planResponse =
+        await fetch(
+          API_BASE +
+          "/api/projects/" +
+          projectId +
+          "/plan",
+          {
+            method:"POST"
+          }
+        );
+
+      if(!planResponse.ok){
+
+        throw new Error("Scene planning failed.");
+
+      }
+
+      const plan =
+        await planResponse.json();
+
+      scenes = plan.scenes || [];
+
+    }else{
+
+      /*
+        Local preview mode.
+
+        This creates the UI scene plan only.
+        It does NOT pretend to have generated an AI video.
+      */
+
+      await sleep(900);
+
+      scenes = [
+
+        {
+          id:"scene_01",
+          title:"Opening",
+          duration:5,
+          visual:"Establish the location and introduce the characters."
+        },
+
+        {
+          id:"scene_02",
+          title:"Funny Setup",
+          duration:7,
+          visual:"Characters begin the conversation and comic situation."
+        },
+
+        {
+          id:"scene_03",
+          title:"Conflict",
+          duration:7,
+          visual:"The misunderstanding grows with funny reactions."
+        },
+
+        {
+          id:"scene_04",
+          title:"Punchline",
+          duration:5,
+          visual:"Big reaction and final joke."
+        },
+
+        {
+          id:"scene_05",
+          title:"Outro",
+          duration:4,
+          visual:"Final reaction and short comedy ending."
+        }
+
+      ];
+
+    }
+
+    renderSceneTimeline();
+
+    document.getElementById("renderButton").disabled = false;
+
+    document.getElementById("previewTitle").textContent =
+      "Scene plan ready";
+
+    document.getElementById("previewSubtitle").textContent =
+      language +
+      " · " +
+      characters.length +
+      " characters · " +
+      scenes.length +
+      " scenes";
+
+    setStatus("Scene plan ready.",100);
+
+    showToast("Scene plan created.");
+
+  }catch(error){
+
+    console.error(error);
+
+    showToast(error.message || "Unable to create project.");
+
+    setStatus("Planning failed.",0);
+
+  }finally{
+
+    button.disabled = false;
+
+  }
+
+}
+
+
+function renderSceneTimeline(){
+
+  const container =
+    document.getElementById("sceneTimeline");
+
+  container.innerHTML = "";
+
+  scenes.forEach((scene,index)=>{
+
+    const card =
+      document.createElement("div");
+
+    card.className = "scene-card";
+
+    card.id = "scene-" + index;
+
+    card.innerHTML = `
+
+      <div class="scene-number">
+        SCENE ${String(index+1).padStart(2,"0")}
+      </div>
+
+      <div class="sce
